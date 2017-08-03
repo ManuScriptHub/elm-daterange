@@ -32,7 +32,7 @@ update a m =
             { m | to = Maybe.map (Util.notBefore m.from) maybeDate }
 
         SetRange ( maybeFrom, maybeTo ) ->
-            List.foldl update m [ (SetTo maybeTo), (SetFrom maybeFrom) ]
+            List.foldl update m [ SetTo maybeTo, SetFrom maybeFrom ]
 
 
 isValid : Model -> Bool
@@ -52,4 +52,4 @@ uut =
         i2 =
             update (SetFrom (Util.parseDate "2017-01-12")) i1
     in
-        i2
+    i2

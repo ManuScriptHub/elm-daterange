@@ -38,12 +38,12 @@ update act model =
             { model | selectedIndex = mbItem }
 
         SelectionChanged str ->
-            (update (Select (Result.toMaybe (String.toInt str))) model)
+            update (Select (Result.toMaybe (String.toInt str))) model
 
 
 data : Model a -> List a
 data m =
-    List.map snd m.data
+    List.map Tuple.second m.data
 
 
 map : (a -> a) -> Model a -> Model a
@@ -63,10 +63,10 @@ selected : Model a -> List a
 selected m =
     case m.selectedIndex of
         Nothing ->
-            List.map snd m.data
+            List.map Tuple.second m.data
 
         Just idx ->
-            List.map snd <| List.filter (\( i, _ ) -> i == idx) m.data
+            List.map Tuple.second <| List.filter (\( i, _ ) -> i == idx) m.data
 
 
 onInput : Signal.Address b -> (String -> b) -> Attribute
@@ -90,7 +90,7 @@ options m =
                 Just label ->
                     [ option [ value "*" ] [ text label ] ]
     in
-        allOption ++ (List.map (toOption m) m.data)
+    allOption ++ List.map (toOption m) m.data
 
 
 view : Signal.Address (Msg a) -> Model a -> Html
@@ -99,9 +99,9 @@ view addr m =
         idx =
             Maybe.map toString m.selectedIndex
     in
-        Html.select
-            [ onInput addr SelectionChanged
-            , st [ adjustSelectStyle ]
-            , value (withDefault "*" idx)
-            ]
-            (options m)
+    Html.select
+        [ onInput addr SelectionChanged
+        , st [ adjustSelectStyle ]
+        , value (withDefault "*" idx)
+        ]
+        (options m)

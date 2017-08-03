@@ -1,9 +1,9 @@
 module DateField exposing (..)
 
-import Html exposing (Html, div, input, text, Attribute)
-import Html.Attributes as HA exposing (style, for, type', id, name, value, min, max)
-import Html.Events as HE exposing (on, targetValue)
 import Date exposing (Date)
+import Html exposing (Attribute, Html, div, input, text)
+import Html.Attributes as HA exposing (for, id, max, min, name, style, type_, value)
+import Html.Events as HE exposing (on, targetValue)
 import Util exposing ((=>))
 
 
@@ -34,7 +34,7 @@ init id =
 view : Model -> Html Msg
 view m =
     input
-        [ HA.type' "date"
+        [ HA.type_ "date"
         , HA.id m.id
         , HA.name m.id
         , HA.min (Util.maybeDateToString m.minValue)
@@ -59,11 +59,11 @@ update a m =
                 newValue =
                     Maybe.map (Util.notBefore maybeDate) m.dateValue
             in
-                update (SetVal newValue) { m | minValue = maybeDate }
+            update (SetVal newValue) { m | minValue = maybeDate }
 
         SetMax maybeDate ->
             let
                 newValue =
                     Maybe.map (Util.notAfter maybeDate) m.dateValue
             in
-                update (SetVal newValue) { m | maxValue = maybeDate }
+            update (SetVal newValue) { m | maxValue = maybeDate }
